@@ -41,12 +41,31 @@ function showUsers(list) {
 }
 
 finderInput.addEventListener("input", () => {
-  const textTyped = finderInput.value.toLowerCase();
+  const textTyped = finderInput.value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
   const filtered = [];
   for (const user of users) {
-    const name = user.firstname.toLowerCase();
-    const lastname = user.lastname.toLowerCase();
-    if (name.includes(textTyped) || lastname.includes(textTyped)) {
+    const name = user.firstname
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .toLowerCase();
+    const lastname = user.lastname
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .toLowerCase();
+    const idName = user.id.toString();
+    const age = user.age.toString();
+    if (
+      name.includes(textTyped) ||
+      lastname.includes(textTyped) ||
+      idName.includes(textTyped) ||
+      age.includes(textTyped)
+    ) {
       filtered.push(user);
     }
   }
